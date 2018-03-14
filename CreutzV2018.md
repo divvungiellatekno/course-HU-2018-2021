@@ -145,15 +145,40 @@ Formalisms / technologies used:
     * lexc
     * twolc
     * xfst rewrite rules
-* **syntax:** Constraint grammar
+* **syntax:** Constraint grammar (in the form of *VISLCG3* )
+
+All of these are open source except for the Xerox tools (which are free, though). Foma does not support TwolC (see further down).
 
 ## LexC
 
-* word-and-paradigm
-* “lexc är ett programmeringsspråk för att skriva morfologiska lexikon med”
-* full-size lexicon
-* testing
+* an excellent formalism for concatenative morphology
+* typically, you specify stems and affixes in different lexicons
+* ... to allow for abstractions over stem classes and inflections
+* it is in essence a programming language for linguists
+* ... where you spell out the morphology of a language such that a compiler can turn it into an executable program (at least with the help of a run-time engine)
 
+## TwolC
+
+* Formalism developed by Kimmo Koskenniemi in the early 80's to describe phonological processes
+* resembles quite closely generative rewrite rules of the form `A -> B / C _ D`
+* rules are unordered and applied in parallel
+
+## Xfst rewrite rules
+
+* another formalism to describe phonology
+* main difference to TwolC: rules are ordered and applied in sequence
+
+Both TwolC and Xfst rewrite rules are supported by the Giella infrastructure, compilation support is dependent on the compiler tool used: Foma does not support Twolc, everything else is supported by all tools.
+
+## Constraint grammar
+
+* formalism developed at Helsinki university by Fred Karlsson, later extended by Tapanainen (CG2) and the VISL project (CG3)
+* main idea is to remove or select specific possible readings of ambiguous words given context constraints:
+    * in the context of a subject personal pronoun, select a verb reading that agrees with the pronoun in person and number
+* used a lot in text parsers in combination with morphological analysers, giving very good results
+* also used in language technology tools and products such as machine translation and grammar checking
+
+## Testing
 
 Systematic testing of:
 
@@ -162,15 +187,37 @@ Systematic testing of:
 
 # Tools
 
-* keyboards (desktop & mobile)
-    * locale registration
-* spellers
-* hyphenation
-* grammar checkers
-* text-to-speech systems
-* dictionaries
-* language learning
-* Korp
-* tool integration into host applications
+## keyboards (desktop & mobile)
 
-* Summary
+A very simple syntax:
+
+```
+```
+
+is used to produce ready-to-use installers.
+
+* locale registration
+
+![Plains cree keyboard menu entry](images/crk-Latn.png)
+
+![Plains Cree in MS Word](images/PlainsCreeWord.png)
+
+## spellers
+
+## hyphenation
+
+## grammar checkers
+
+## text-to-speech systems
+
+## dictionaries
+
+## language learning
+
+## Korp
+
+## tool integration into host applications
+
+# Summary
+
+![House overview](images/hus_eng_ny.pdf)
