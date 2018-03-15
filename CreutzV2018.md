@@ -126,6 +126,42 @@ Rule based technologies on the other hand, in principle only requires a mother t
 
 ![International cooperation](images/gtlangs_circumpolar_names.png)
 
+## Standardised dir structure
+
+Every language has the following directory structure:
+
+```
+.
+├── am-shared
+├── devtools
+├── doc
+│   └── resources
+├── m4
+├── misc
+├── src
+│   ├── filters
+│   ├── hyphenation
+│   ├── morphology
+│   ├── orthography
+│   ├── phonetics
+│   ├── phonology
+│   ├── syntax
+│   ├── tagsets
+│   └── transcriptions
+├── test
+│   ├── data
+│   ├── src
+│   └── tools
+└── tools
+    ├── data
+    ├── grammarcheckers
+    ├── hyphenators
+    ├── mt
+    ├── shellscripts
+    ├── spellcheckers
+    └── tokenisers
+```
+
 ## Scalability
 
 * for languages:
@@ -180,23 +216,55 @@ Both TwolC and Xfst rewrite rules are supported by the Giella infrastructure, co
 
 ## Testing
 
-Systematic testing of:
+Systematic testing is essential, and the infrastructure supports several types of tests:
 
 * classes of words/inflections/alternations
 * lemmas
+* in-source test data
+
+Example test data:
+
+```
+Tests:
+
+  Verb - båetedh: # verb I, stem -ie, root vowel -åe-
+    båetedh+V+IV+Inf: båetedh
+    båetedh+V+IV+Ind+Prs+Sg1: båatam
+    båetedh+V+IV+Ind+Prs+Sg2: båatah
+    båetedh+V+IV+Ind+Prs+Sg3: båata
+    båetedh+V+IV+Ind+Prs+Du1: båetien
+    båetedh+V+IV+Ind+Prs+Du2: [båeteden, båetiejidien]
+    båetedh+V+IV+Ind+Prs+Du3: båetiejægan
+    båetedh+V+IV+Ind+Prs+Pl1: [båetebe, båetiejibie]
+    båetedh+V+IV+Ind+Prs+Pl2: [båetede, båetiejidie]
+    båetedh+V+IV+Ind+Prs+Pl3: båetieh
+```
+
+This can be used both as a development gold standard, and as regression testing later.
 
 # Tools
 
 ## keyboards (desktop & mobile)
 
-A very simple syntax:
+A very simple syntax (mobile keyboard shown):
 
 ```
+modes:
+  mobile-default: |
+    á š e r t y u i o p ŋ
+    a s d f g h j k l đ ŧ
+       ž z č c v b n m
+  mobile-shift: |
+    Á Š E R T Y U I O P Ŋ
+    A S D F G H J K L Đ Ŧ
+       Ž Z Č C V B N M
 ```
 
-is used to produce ready-to-use installers.
+This + a few more technical details is used to produce ready-to-use installers.
 
-* locale registration
+### Locale registration
+
+As part of the desktop keyboard installers, the locale of the keyboard is added to the system, so that languages unknown to Windows and macOS is subsequently known and can be used for spell checking:
 
 ![Plains cree keyboard menu entry](images/crk-Latn.png)
 
@@ -204,20 +272,86 @@ is used to produce ready-to-use installers.
 
 ## spellers
 
+A speller is made up of two parts:
+
+1. an acceptor - is this a word or not?
+1. an error model - if this is not a word, how is it most likely to be corrected?
+
+In our infrastructure, both are finite state transducers. The acceptor is built from our general analyser, but restricted to only normatively correct forms.
+
+### Short turnaround during development
+
+1. add a word, correct some part of the morphology
+1. compile
+1. test in e.g. LibreOffice or on the command line
+
+Compilation time varies a lot depending on the language and the size and complexity of the lexicon, the morphology and the morphophonology.
+
+### Host app integration
+
+* MS Word (Windows)
+* LibreOffice
+* InDesign
+* web server
+
+![Speller online](images/speller_online.png)
+
 ## hyphenation
+
+* uses rewrite rules to identify syllable structure = hyphenation points
+* uses analyser (lexicon) to find word boundaries and exceptional hyphenation
 
 ## grammar checkers
 
+* morphological analyser for analysis and tokenisation
+* includes disambiguation of multiword expressions
+* a tagger for whitespace errors
+* constraint grammars for both disambiguation and error detection
+* uses valency info and semantic tags to avoid reliance on (faulty) morphology and syntax
+* can also detect various types of compounding errors
+
+Online demo (password protected):
+
+![Grammar checker](images/gram-gram.png)
+
 ## text-to-speech systems
+
+* recordings and text available
+* technology unfortunately from a commercial company = closed source code
+* quality very good
+* the original plan was to use our own text processing for conversion to IPA/SAMPA/whatever,
+  and we still plan to do that
+* we also plan to build a fully open-source text-to-speech system based on Edinburgh technology
+* the idea is to use roughly the same text processing as we use for the grammar checker to produce a phonetic transcription, and feed that to the synthesis engine
+
+DEMO
 
 ## dictionaries
 
+* content from several sources
+* morphological analysis to enable looking up directly in text
+    * web browsers
+    * macOS and Windows apps
+
+![NDS](images/neahttadigisaanit_reader_bubble_cutted.png)
+
 ## language learning
+
+* analysing reader input
+* adapting suggested forms according to user preferences
 
 ## Korp
 
-## tool integration into host applications
+* database and interface for searching a parsed corpus
+* morphological analysis, disambiguation, syntactic parsing using our tools
+* corpus data available in many languages
+
+![Korp](images/korp_boahtit.png)
 
 # Summary
+
+* one source for everything
+* reuse and multiple usages
+* summarised in the following illustration:
 
 ![House overview](images/hus_eng_ny.pdf)
