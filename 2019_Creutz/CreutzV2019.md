@@ -262,6 +262,10 @@ modes:
 
 This + a few more technical details is used to produce ready-to-use installers.
 
+Since December 2018 one can also add a `.zhfst` file, and get speller support:
+
+![Plains cree keyboard menu entry](images/sme-keyboard-speller.jpeg)
+
 ### Locale registration
 
 As part of the desktop keyboard installers, the locale of the keyboard is added to the system, so that languages unknown to Windows and macOS is subsequently known and can be used for spell checking:
