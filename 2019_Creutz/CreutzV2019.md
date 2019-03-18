@@ -322,6 +322,9 @@ Works in:
 * planned support: macOS (system wide), possibly Windows
 
 Screen shot from LibreOffice:
+![Grammar checker](images/LO-gram.png)
+
+Screen shot from online grammar checker:
 ![Grammar checker](images/gram-gram.png)
 
 ## text-to-speech systems
