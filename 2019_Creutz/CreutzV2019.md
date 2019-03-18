@@ -306,12 +306,22 @@ Compilation time varies a lot depending on the language and the size and complex
 * morphological analyser for analysis and tokenisation
 * includes disambiguation of multiword expressions
 * a tagger for whitespace errors
-* constraint grammars for both disambiguation and error detection
+*  runs the spelling checker on unknown words
+* constraint grammars for both disambiguation and error detection, as well as for selecting or filtering speller suggestions based on context
 * uses valency info and semantic tags to avoid reliance on (faulty) morphology and syntax
-* can also detect various types of compounding errors
+* new research comming out of this:
+  * improvements to sentence detection (near-perfect results possible)
+  * improvements to tokenisation and whitespace handling - we can detect compounds erroneously written apart (not very well handled or not at all by most other grammar checkers)
 
-Online demo (password protected):
+Works in:
 
+* LibreOffice
+* MS Word (web version for now, Win and Mac coming soon)
+* GoogleDocs
+* Online demo (password protected)
+* planned support: macOS (system wide), possibly Windows
+
+Screen shot from LibreOffice:
 ![Grammar checker](images/gram-gram.png)
 
 ## text-to-speech systems
