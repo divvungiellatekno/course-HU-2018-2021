@@ -67,6 +67,8 @@ Our starting point and main focus is the Sámi languages, but everything that we
 
 # Minority languages and requirements for LT development
 
+2019 is the UN [International Year of Indigenous languages](https://en.iyil2019.org/). Our work directly supports the goals of IYIL 2019.
+
 ## Requirements of minority language development
 
 Typically, minority languages share a number of characteristics:
@@ -317,6 +319,10 @@ Compilation time varies a lot depending on the language and the size and complex
   * improvements to sentence detection (near-perfect results possible)
   * improvements to tokenisation and whitespace handling - we can detect compounds erroneously written apart (not very well handled or not at all by most other grammar checkers)
 
+### Grammar checker flow chart:
+
+![Grammar checker](images/GramCheckFlow2.0.png)
+
 Works in:
 
 * LibreOffice
@@ -336,6 +342,8 @@ Works in:
 ### Screen shot from online grammar checker:
 
 ![Grammar checker](images/gram-gram.png)
+
+### Demo
 
 ## text-to-speech systems
 
