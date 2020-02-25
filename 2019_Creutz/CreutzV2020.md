@@ -1,10 +1,10 @@
-# LT for minority languages & the Giella infrastructure
+# LT for minority languages & the GiellaLT infrastructure
 
 Main sections:
 
 * introduction
 * minority languages and requirements for LT development
-* Giella infra
+* GiellaLT infra
 * lexc & twolc as linguistic programming languages
 * development
 * tools
@@ -67,7 +67,7 @@ Our starting point and main focus is the Sámi languages, but everything that we
 
 # Minority languages and requirements for LT development
 
-2019 is the UN [International Year of Indigenous languages](https://en.iyil2019.org/). Our work directly supports the goals of IYIL 2019.
+<!-- 2019 was the UN [International Year of Indigenous languages](https://en.iyil2019.org/). Our work directly supports the goals of IYIL 2019. -->
 
 ## Requirements of minority language development
 
@@ -75,13 +75,13 @@ Typically, minority languages share a number of characteristics:
 
 * few or non-existing digital resources
 * restricted availability of dictionaries and grammar, or no at all
-* often complex morphology or morphophonology
+* often complex morphology or morphophonology or both
 
 ## Ownership
 
 It is important that language communities have control over language resources relating to their language, in the sense that no private entity can block access to those resources. Otherwise the society will risk vendor lock-in, and expensive redevelopment of existing tools.
 
-The best solution is to ensure that everythig is **open source**.
+The best solution is to ensure that everythig is **open source**. All resources in the GiellaLT infra are open source, unless forced to by software we integrate with (MS Office is one such case). Also, some language communities do not want their language to be openly accessible, due ot a history of being colonialised, oppressed and their language becoming stigmatised. In such cases we of course accept their decission.
 
 ![Open Source](images/opensourceimages.jpg)
 
@@ -89,7 +89,7 @@ The best solution is to ensure that everythig is **open source**.
 
 Because of the costs of language technology projects, it is important to build your infra and resources with reuse in mind, and also plan them so that everything is prepared for multiple usage scenarios.
 
-E.g. in the Giella infrastructure, we have standardised conventions that makes it easy to build both normative and descriptive tools from the same codebase.
+E.g. in the GiellaLT infrastructure, we have standardised conventions that makes it easy to build both normative and descriptive tools from the same codebase.
 
 * **normative:** tools that adhere strictly to an agreed-upon norm for writing, and try to correct text so that deviations are brought in line with the norm, like spelling checkers and grammar checkers.
 * **descriptive:** tools that try to process all texts in a language, irrespective of the normative properties of the text
@@ -101,11 +101,11 @@ Language technology comes in several flavours:
 * rule-based
 * statistical
 * stocastic
-* neural-nets
+* neural nets
 
 Typical of all but the rule-based one is that they require large amounts of raw data to be trained on.
 
-Rule based technologies on the other hand, in principle only requires a mother tongue speaker / linguist.
+Rule based technologies on the other hand, in principle only requires a mother tongue speaker and a linguist (which in the best of cases is one and the same person).
 
 ![Rule-based](images/fst_fst.png)
 
@@ -116,7 +116,7 @@ Rule based technologies on the other hand, in principle only requires a mother t
 * korpus
 * native speakers
 
-# The Giella infrastructure
+# The GiellaLT infrastructure
 
 * language independent infrastructure
 * scalability in two dimensions: languages x tools/products
@@ -183,6 +183,7 @@ Formalisms / technologies used:
     * lexc
     * twolc
     * xfst rewrite rules
+    * Xeroxs-style pmatch scripts
 * **syntax:** Constraint grammar (in the form of *VISLCG3* )
 
 All of these are open source except for the Xerox tools (which are free, though). Foma does not support TwolC (see further down).
@@ -193,7 +194,7 @@ All of these are open source except for the Xerox tools (which are free, though)
 * typically, you specify stems and affixes in different lexicons
 * ... to allow for abstractions over stem classes and inflections
 * it is in essence a programming language for linguists
-* ... where you spell out the morphology of a language such that a compiler can turn it into an executable program (at least with the help of a run-time engine)
+* ... where you spell out the morphology of a language such that a compiler can turn it into an executable program (with the help of a run-time engine)
 
 ## TwolC
 
@@ -206,7 +207,15 @@ All of these are open source except for the Xerox tools (which are free, though)
 * another formalism to describe phonology
 * main difference to TwolC: rules are ordered and applied in sequence
 
-Both TwolC and Xfst rewrite rules are supported by the Giella infrastructure, compilation support is dependent on the compiler tool used: Foma does not support Twolc, everything else is supported by all tools.
+Both TwolC and Xfst rewrite rules are supported by the GiellaLT infrastructure, compilation support is dependent on the compiler tool used: Foma does not support Twolc, everything else is supported by all tools.
+
+## Xeroxs-style pmatch scripts
+
+Hfst only, this formalism is an extension of the xfst rewrite rules, and are a reimplementation of work by Xerox around 10 years ago. It allowes for more complex text processing, and with a few modifications we have turned the formalism into a tokeniser-and-morphological-analyser that will also output ambiguous tokens. Such ambiguity can then be resolved using Constraint Grammar, followed by a simple reformatter that rewrites tokens that are split in two.
+
+Using this setup it is possible to get the tokenisation almost perfect. In practice we still have some work to do, but we are already well above the alternative methods. This is for North Sámi only so far, but both the formalism and the infrastructure is of course language independent.
+
+The pmatch scripts are key to a new part of our infrastructure: rule-based grammar checking. The 1.0 release was done in the beginning of this month.
 
 ## Constraint grammar
 
@@ -262,11 +271,15 @@ modes:
        Ž Z Č C V B N M
 ```
 
-This + a few more technical details is used to produce ready-to-use installers.
+This + a few more technical details is used to produce ready-to-use installers and keyboard apps. One can also add a speller file (fst-based spell checker), and get spelling correction as part of your mobile keyboard. The end result looks like this:
 
-Since December 2018 one can also add a `.zhfst` file, and get speller support:
+![North Sámi mobile keyboard](images/sme-keyboard-speller.jpeg)
 
-![Plains cree keyboard menu entry](images/sme-keyboard-speller.jpeg)
+And we of course support dark mode:
+
+![Dark North Sámi mobile keyboard](images/sme-keyboard-speller-dark.jpeg)
+
+The speller is exactly the same fst-based speller as described below, with slight adaptions of the error model to fit the keyboard layout and the errors typically made.
 
 ### Locale registration
 
@@ -280,10 +293,12 @@ As part of the desktop keyboard installers, the locale of the keyboard is added 
 
 A speller is made up of two parts:
 
-1. an acceptor - is this a word or not?
+1. an acceptor - is this a correct word or not?
 1. an error model - if this is not a word, how is it most likely to be corrected?
 
 In our infrastructure, both are finite state transducers. The acceptor is built from our general analyser, but restricted to only normatively correct forms.
+
+The error model contains a standard permutation fst for the relevant alphabet, with language specific additions based on the likely errors made by writers.
 
 ### Short turnaround during development
 
@@ -316,7 +331,7 @@ Compilation time varies a lot depending on the language and the size and complex
 * constraint grammars for both disambiguation and error detection, as well as for selecting or filtering speller suggestions based on context
 * uses valency info and semantic tags to avoid reliance on (faulty) morphology and syntax
 * new research comming out of this:
-  * improvements to sentence detection (near-perfect results possible)
+  * improvements to sentence border detection (near-perfect results possible)
   * improvements to tokenisation and whitespace handling - we can detect compounds erroneously written apart (not very well handled or not at all by most other grammar checkers)
 
 ### Grammar checker flow chart:
@@ -326,9 +341,8 @@ Compilation time varies a lot depending on the language and the size and complex
 Works in:
 
 * LibreOffice
-* MS Word (web version for now, Win and Mac coming soon)
+* MS Word (web version for now, Win and Mac coming later)
 * GoogleDocs
-* Online demo (password protected)
 * planned support: macOS (system wide), possibly Windows
 
 ### Screen shot from LibreOffice:
@@ -339,13 +353,13 @@ Works in:
 
 ![Grammar checker](images/Word-gram.png)
 
-### Screen shot from online grammar checker:
+<!-- ### Screen shot from online grammar checker:
 
-![Grammar checker](images/gram-gram.png)
+![Grammar checker](images/gram-gram.png) -->
 
 ### Demo
 
-## text-to-speech systems
+## Text-to-speech systems
 
 * recordings and text available
 * technology unfortunately from a commercial company = closed source code
@@ -355,7 +369,7 @@ Works in:
 * we also plan to build a fully open-source text-to-speech system based on Edinburgh technology
 * the idea is to use roughly the same text processing as we use for the grammar checker to produce a phonetic transcription, and feed that to the synthesis engine
 
-DEMO
+### Demo
 
 ## dictionaries
 
@@ -373,7 +387,7 @@ DEMO
 
 ## Korp
 
-* database and interface for searching a parsed corpus
+* database and interface for searching an analysed corpus
 * morphological analysis, disambiguation, syntactic parsing using our tools
 * corpus data available in many languages
 
