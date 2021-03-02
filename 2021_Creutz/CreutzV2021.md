@@ -408,6 +408,8 @@ Works in:
 
 # Links
 
+Everything easily accessible in GitHub, everyone can edit and contribute.
+
 - Divvun tools & download: [divvun.no](https://divvun.no/)
 - Language resources & source code: [github.com/giellalt](https://github.com/giellalt/)
 - Tool source code: [github.com/divvun](https://github.com/divvun/)
