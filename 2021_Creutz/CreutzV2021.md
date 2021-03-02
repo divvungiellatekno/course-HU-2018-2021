@@ -129,6 +129,10 @@ Rule based technologies on the other hand, in principle only requires a mother t
 
 ![International cooperation](images/gtlangs_circumpolar_names.png)
 
+Some of the language repositories, with build and bug status, license and maturity:
+
+![The registry](images/registry.png)
+
 ## Standardised dir structure
 
 Every language has the following (slightly simplified) directory structure:
