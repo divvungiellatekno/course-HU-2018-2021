@@ -20,6 +20,7 @@ Main sections:
 * Lingsoft
 * Sámi Parliament
 * UiT the Arctic University of Norway
+* heading the Divvun group at UiT
 
 ## What is language technology
 
@@ -59,7 +60,7 @@ empovering those with access, leaving those without behind. As such it can easil
 * access to computers
 * access to your letters on that computer
 
-For most languages of the world (about 7000) this is **not true**, and will only add to all the other factors driving language death.
+For speakers of most of the languages of the world (there are about 7000) one or several of the points above are **not true**, and will only add to all the other factors driving language death.
 
 One of the main objectives of the **GiellaLT** infrastructure is to help counter this, by developing language technology for such languages, to make them easy to use on digital devices.
 
@@ -69,7 +70,7 @@ Our starting point and main focus is the Sámi languages, but everything that we
 
 <!-- 2019 was the UN [International Year of Indigenous languages](https://en.iyil2019.org/). Our work directly supports the goals of IYIL 2019. -->
 
-## Requirements of minority language development
+## Characteristics of minority language development
 
 Typically, minority languages share a number of characteristics:
 
@@ -79,9 +80,9 @@ Typically, minority languages share a number of characteristics:
 
 ## Ownership
 
-It is important that language communities have control over language resources relating to their language, in the sense that no private entity can block access to those resources. Otherwise the society will risk vendor lock-in, and expensive redevelopment of existing tools.
+It is important that language communities have control over language resources relating to their language, in the sense that no private entity can block access to those resources. Otherwise the society will risk vendor lock-in, and expensive redevelopment of existing tools and resources. — Despite being aware of this, we have experienced it **twice**!
 
-The best solution is to ensure that everythig is **open source**. All resources in the GiellaLT infra are open source, unless forced to by software we integrate with (MS Office is one such case). Also, some language communities do not want their language to be openly accessible, due ot a history of being colonialised, oppressed and their language becoming stigmatised. In such cases we of course accept their decission.
+The best solution is to ensure that everythig is **open source**. All resources and tools in the GiellaLT infra are open source, unless forced to by software we integrate with (MS Office is one such case). Also, some language communities do not want their language to be openly accessible, due to a history of being colonialised, oppressed and their language becoming stigmatised. In such cases we of course accept their decission.
 
 ![Open Source](images/opensourceimages.jpg)
 
@@ -103,7 +104,7 @@ Language technology comes in several flavours:
 * stocastic
 * neural nets
 
-Typical of all but the rule-based one is that they require large amounts of raw data to be trained on.
+Typical for all but the rule-based one is that they require large amounts of raw data to be trained on.
 
 Rule based technologies on the other hand, in principle only requires a mother tongue speaker and a linguist (which in the best of cases is one and the same person).
 
@@ -122,32 +123,28 @@ Rule based technologies on the other hand, in principle only requires a mother t
 * scalability in two dimensions: languages x tools/products
 * standardised dir & file structure
 * encourages and fascilitates international cooperation
-* ~100 languages in our infra (at various stages), 30+ in active development
+* ~130 languages in our infra (at various stages), 30+ in active development
     * almost all of them minority languages
-    * majority language grammars and LT resources only to support the minority languages
+    * majority language grammars and LT resources mainly to support the minority languages
 
 ![International cooperation](images/gtlangs_circumpolar_names.png)
 
 ## Standardised dir structure
 
-Every language has the following directory structure:
+Every language has the following (slightly simplified) directory structure:
 
 ```
 .
-├── am-shared
 ├── devtools
-├── doc
-│   └── resources
-├── m4
-├── misc
+├── docs
 ├── src
+│   ├── cg3
 │   ├── filters
+│   ├── fst
 │   ├── hyphenation
-│   ├── morphology
 │   ├── orthography
 │   ├── phonetics
-│   ├── phonology
-│   ├── syntax
+│   ├── scripts
 │   ├── tagsets
 │   └── transcriptions
 ├── test
@@ -155,7 +152,7 @@ Every language has the following directory structure:
 │   ├── src
 │   └── tools
 └── tools
-    ├── data
+    ├── analysers
     ├── grammarcheckers
     ├── hyphenators
     ├── mt
@@ -163,6 +160,8 @@ Every language has the following directory structure:
     ├── spellcheckers
     └── tokenisers
 ```
+
+We are working on improving the direcotry structure and file organisation.
 
 ## Scalability
 
@@ -213,17 +212,17 @@ Both TwolC and Xfst rewrite rules are supported by the GiellaLT infrastructure, 
 
 Hfst only, this formalism is an extension of the xfst rewrite rules, and are a reimplementation of work by Xerox around 10 years ago. It allowes for more complex text processing, and with a few modifications we have turned the formalism into a tokeniser-and-morphological-analyser that will also output ambiguous tokens. Such ambiguity can then be resolved using Constraint Grammar, followed by a simple reformatter that rewrites tokens that are split in two.
 
-Using this setup it is possible to get the tokenisation almost perfect. In practice we still have some work to do, but we are already well above the alternative methods. This is for North Sámi only so far, but both the formalism and the infrastructure is of course language independent.
+Using this setup it is possible to get the tokenisation almost perfect. In practice we still have some work to do, but we are already well above the alternative methods.
 
-The pmatch scripts are key to a new part of our infrastructure: rule-based grammar checking. The 1.0 release was done in the beginning of this month.
+The pmatch scripts are key to a recent addition to our infrastructure: rule-based grammar checking. We are also now developing text-to-speech systems using the pmatch scripts + VISLCG3 processing to turn raw text into disambiguated IPA text streams that can be fed to the synthesis engine.
 
 ## Constraint grammar
 
-* formalism developed at Helsinki university by Fred Karlsson, later extended by Tapanainen (CG2) and the VISL project (CG3)
+* formalism developed at Helsinki university by Fred Karlsson, later extended by Tapanainen (CG2), and even furthery by the VISL project (CG3)
 * main idea is to remove or select specific possible readings of ambiguous words given context constraints:
     * in the context of a subject personal pronoun, select a verb reading that agrees with the pronoun in person and number
 * used a lot in text parsers in combination with morphological analysers, giving very good results
-* also used in language technology tools and products such as machine translation and grammar checking
+* also used in language technology tools and products such as machine translation and grammar checking since the late 1990's
 
 ## Testing
 
@@ -233,7 +232,7 @@ Systematic testing is essential, and the infrastructure supports several types o
 * lemmas
 * in-source test data
 
-Example test data:
+Example test data (South Sámi):
 
 ```
 Tests:
@@ -298,7 +297,7 @@ A speller is made up of two parts:
 
 In our infrastructure, both are finite state transducers. The acceptor is built from our general analyser, but restricted to only normatively correct forms.
 
-The error model contains a standard permutation fst for the relevant alphabet, with language specific additions based on the likely errors made by writers.
+The error model contains a standard permutation fst for the relevant alphabet, with language specific additions based on likely errors made by writers.
 
 ### Short turnaround during development
 
@@ -310,9 +309,10 @@ Compilation time varies a lot depending on the language and the size and complex
 
 ### Host app integration
 
-* MS Word (Windows)
-* LibreOffice
-* InDesign
+* MS Word (Windows, macOS coming)
+* LibreOffice (all OS's)
+* System wide spellers (Windows, macOS, Linux)
+* mobile keyboard apps
 * web server
 
 ![Speller online](images/speller_online.png)
@@ -327,7 +327,7 @@ Compilation time varies a lot depending on the language and the size and complex
 * morphological analyser for analysis and tokenisation
 * includes disambiguation of multiword expressions
 * a tagger for whitespace errors
-*  runs the spelling checker on unknown words
+* runs the spelling checker on unknown words
 * constraint grammars for both disambiguation and error detection, as well as for selecting or filtering speller suggestions based on context
 * uses valency info and semantic tags to avoid reliance on (faulty) morphology and syntax
 * new research comming out of this:
@@ -363,10 +363,11 @@ Works in:
 
 * recordings and text available
 * technology unfortunately from a commercial company = closed source code
+  * we have now been hunted by this - they are closing down the macOS version
+  * we had fortunately already planned a new project for Julev Sámi that is completely built using open source, so we should be good in a couple of years
 * quality very good
-* the original plan was to use our own text processing for conversion to IPA/SAMPA/whatever,
-  and we still plan to do that
-* we also plan to build a fully open-source text-to-speech system based on Edinburgh technology
+* the original plan was to use our own text processing for conversion to IPA or similar,
+  we are doing that in our new project
 * the idea is to use roughly the same text processing as we use for the grammar checker to produce a phonetic transcription, and feed that to the synthesis engine
 
 ### Demo
@@ -400,3 +401,12 @@ Works in:
 * summarised in the following illustration:
 
 ![House overview](images/hus_eng_ny.pdf)
+
+# Links
+
+- Divvun tools & download: [divvun.no](https://divvun.no/)
+- Language resources & source code: [github.com/giellalt](https://github.com/giellalt/)
+- Tool source code: [github.com/divvun](https://github.com/divvun/)
+- Korp:  [gtweb.uit.no/korp/](http://gtweb.uit.no/korp/)
+- Machine translation: [jorgal.uit.no](http://jorgal.uit.no/)
+- Overview + build status: [github.com/divvun/registry](https://github.com/divvun/registry)
