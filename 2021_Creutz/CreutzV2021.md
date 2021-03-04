@@ -8,8 +8,9 @@ Main sections:
 * lexc & twolc as linguistic programming languages
 * development
 * tools
-* demos
+* demo
 * summary
+* links
 
 # Introduction
 
@@ -374,8 +375,6 @@ Works in:
   we are doing that in our new project
 * the idea is to use roughly the same text processing as we use for the grammar checker to produce a phonetic transcription, and feed that to the synthesis engine
 
-### Demo
-
 ## dictionaries
 
 * content from several sources
@@ -410,7 +409,7 @@ Works in:
 
 Everything easily accessible in GitHub, everyone can edit and contribute.
 
-- Divvun tools & download: [divvun.no](https://divvun.no/)
+- Divvun tools & download: [divvun.no](https://divvun.no/) & [divvun.org](https://divvun.org/)
 - Language resources & source code: [github.com/giellalt](https://github.com/giellalt/)
 - Tool source code: [github.com/divvun](https://github.com/divvun/)
 - Korp:  [gtweb.uit.no/korp/](http://gtweb.uit.no/korp/)
